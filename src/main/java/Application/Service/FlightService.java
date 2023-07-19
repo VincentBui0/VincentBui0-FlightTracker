@@ -52,8 +52,13 @@ public class FlightService {
      * @return the newly added flight if the add operation was successful, including the flight_id. We do this to
      *         inform our provide the front-end client with information about the added Flight.
      */
-    public Flight addFlight(Flight flight){
-        return null;
+        public Flight addFlight(Flight flight){
+    
+        // Insert the flight into the database using the FlightDAO
+        Flight persistedFlight = flightDAO.insertFlight(flight);
+    
+        // Return the persisted flight with the flight_id
+        return persistedFlight;
     }
 
     /**
@@ -70,7 +75,11 @@ public class FlightService {
      *         user should have some insight if they attempted to edit a nonexistent flight.)
      */
     public Flight updateFlight(int flight_id, Flight flight){
-        return null;
+        if (flightDAO.getFlightById(flight_id) == null) {
+            return null;
+        }
+        flightDAO.updateFlight(flight_id, flight);
+        return flightDAO.getFlightById(flight_id);
     }
 
     /**
@@ -79,8 +88,12 @@ public class FlightService {
      *
      * @return all flights in the database.
      */
-    public List<Flight> getAllFlights() {
-        return null;
+        public List<Flight> getAllFlights() {
+    
+        // Retrieve all flights from the database using the FlightDAO
+        List<Flight> allFlights = flightDAO.getAllFlights();
+    
+        return allFlights;
     }
 
     /**
@@ -92,6 +105,12 @@ public class FlightService {
      * @return all flights departing from departure_city and arriving at arrival_city.
      */
     public List<Flight> getAllFlightsFromCityToCity(String departure_city, String arrival_city) {
-        return null;
+    
+        // Retrieve all flights departing from departure_city and arriving at arrival_city from the database using the FlightDAO
+        List<Flight> flights = flightDAO.getAllFlightsFromCityToCity(departure_city, arrival_city);
+        
+        return flights;
     }
 }
+
+
